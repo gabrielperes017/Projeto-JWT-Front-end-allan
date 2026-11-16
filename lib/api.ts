@@ -4,12 +4,10 @@ const baseURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/v1";
 
 export type User = { id: number; name: string; email: string; isAdmin: boolean; active: boolean };
 
-// --- sessão (localStorage) ---
 export function saveSession(accessToken: string, refreshToken: string, user?: User) {
   localStorage.setItem("accessToken", accessToken);
   localStorage.setItem("refreshToken", refreshToken);
   if (user) localStorage.setItem("user", JSON.stringify(user));
-  // cookie sem dado sensível, usado só pelo proxy.ts para redirecionar ao login
   document.cookie = "session=1; path=/; SameSite=Lax";
 }
 
@@ -31,7 +29,6 @@ export function getUser(): User | null {
 export const errorMessage = (e: unknown) =>
   (e as AxiosError<{ error?: string }>).response?.data?.error || "Erro inesperado";
 
-// --- cliente axios com renovação automática ---
 const api = axios.create({ baseURL, headers: { "Content-Type": "application/json" } });
 
 api.interceptors.request.use((config) => {
@@ -40,12 +37,10 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Uma única chamada de refresh por vez; as demais requisições esperam a mesma promise (fila).
 let refreshing: Promise<string> | null = null;
 
 async function refreshTokens(): Promise<string> {
   const refreshToken = localStorage.getItem("refreshToken");
-  // axios "puro": sem interceptor, evita loop
   const res = await axios.post(`${baseURL}/auth/refresh`, { refreshToken });
   saveSession(res.data.accessToken, res.data.refreshToken, res.data.user);
   return res.data.accessToken;
@@ -77,7 +72,6 @@ api.interceptors.response.use(
       return api(original);
     } catch (refreshError) {
       clearSession();
-      // recarga completa: limpa estado da página e cai no login
       // eslint-disable-next-line @next/next/no-location-assign-relative-destination
       window.location.href = "/";
       return Promise.reject(refreshError);

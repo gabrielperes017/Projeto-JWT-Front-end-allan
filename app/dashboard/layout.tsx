@@ -10,7 +10,6 @@ export default function DashboardLayout({children}: {children: React.ReactNode})
   const router = useRouter();
   const user = useUser();
 
-  // sem sessão válida, volta ao login
   useEffect(() => {
     if (!localStorage.getItem('accessToken')) router.replace('/');
   }, [router]);

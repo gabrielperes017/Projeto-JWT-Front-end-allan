@@ -1,6 +1,6 @@
 :root {
-  --unipar-vermelho: #C22820;   /* vermelho Unipar */
-  --unipar-vinho:    #5C2034;   /* vinho Unipar  */
+  --unipar-vermelho: #C22820;
+  --unipar-vinho:    #5C2034;
 }
 
 body {
@@ -23,7 +23,6 @@ h1 { color: #5C2034; }
 
 .btn-unipar:hover { filter: brightness(1.1); }
 
-/* --- sistema biblioteca --- */
 label { display: block; margin-top: 12px; font-size: 14px; }
 input, select { display: block; width: 100%; padding: 8px; margin-top: 4px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
 input[type="checkbox"] { display: inline-block; width: auto; margin-right: 6px; }
