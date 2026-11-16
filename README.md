@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# jwt-app — Sistema de Biblioteca (front-end)
 
-## Getting Started
+Next.js 16 + React 19 + TypeScript + axios. Consome a `jwt-api`.
 
-First, run the development server:
+## Instalar
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev     # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+A API deve estar rodando (padrão `http://localhost:3001/v1`). Para outra URL, crie `.env.local`:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+NEXT_PUBLIC_API_URL=http://localhost:3001/v1
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Login do seed da API: `admin@biblioteca.com` / `123456`.
 
-## Learn More
+## Telas
 
-To learn more about Next.js, take a look at the following resources:
+Login, Dashboard (admin), Categorias, Autores, Livros (filtros e vários autores), Leitores (com histórico), Empréstimos (novo, filtro de status, devolução com multa) e Atendentes (somente admin). Nome do usuário e botão Sair no topo.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Renovação automática do token
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+`lib/api.ts` tem um interceptor axios: ao receber `401`, chama `/auth/refresh` e repete a requisição. Várias requisições com 401 ao mesmo tempo compartilham **uma única** chamada de refresh (as demais esperam a mesma promise). Se o refresh falhar, a sessão é limpa e o usuário volta ao login.
 
-## Deploy on Vercel
+## Decisões e riscos
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Tokens no `localStorage`**: simples e funciona com o interceptor no navegador, mas qualquer script injetado (XSS) consegue ler os tokens. Alternativa mais segura: cookies `httpOnly` (exigiria um proxy no servidor Next).
+- **Cookie `session`**: guarda só um marcador (sem token) para o `proxy.ts` redirecionar ao login. Não é segurança: a API valida o token em toda rota.
+- **Menus de admin**: o menu Atendentes e os botões de escrita ficam ocultos para atendentes, mas a API também bloqueia (403).
+- O login por server action foi substituído por login no cliente, necessário para o interceptor acessar os tokens.

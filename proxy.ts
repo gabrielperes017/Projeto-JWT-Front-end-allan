@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export function proxy(req: NextRequest) {
-  const token = req.cookies.get('token')?.value;
+  // cookie "session" é gravado pelo front no login (os tokens ficam no localStorage)
+  const session = req.cookies.get('session')?.value;
 
-  if (!token) {
+  if (!session) {
     return NextResponse.redirect(
       new URL('/', req.url)
     );

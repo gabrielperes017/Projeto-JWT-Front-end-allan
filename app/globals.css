@@ -22,3 +22,30 @@ h1 { color: #5C2034; }
 }
 
 .btn-unipar:hover { filter: brightness(1.1); }
+
+/* --- sistema biblioteca --- */
+label { display: block; margin-top: 12px; font-size: 14px; }
+input, select { display: block; width: 100%; padding: 8px; margin-top: 4px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+input[type="checkbox"] { display: inline-block; width: auto; margin-right: 6px; }
+.error { color: #C22820; }
+.ok { color: #1a7f37; }
+
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 12px 24px; background: #5C2034; color: #fff; }
+.topbar nav { display: flex; gap: 16px; flex-wrap: wrap; }
+.topbar a { color: #fff; text-decoration: none; }
+.topbar a:hover { text-decoration: underline; }
+.topbar button { background: transparent; color: #fff; border: 1px solid #fff; border-radius: 6px; padding: 4px 12px; cursor: pointer; }
+
+.page { max-width: 1000px; margin: 24px auto; padding: 0 16px; width: 100%; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+.card { background: #fff; border-radius: 8px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.15); }
+.card strong { display: block; font-size: 28px; color: #C22820; }
+
+.panel { background: #fff; border-radius: 8px; padding: 16px; margin: 16px 0; box-shadow: 0 1px 3px rgba(0,0,0,.15); }
+.row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; align-items: end; }
+.row button, td button { cursor: pointer; padding: 6px 12px; border-radius: 6px; border: 1px solid #5C2034; background: #fff; color: #5C2034; }
+.row button.btn-unipar { padding: 8px 16px; font-size: 14px; color: #fff; border: none; }
+
+table { width: 100%; border-collapse: collapse; background: #fff; }
+th, td { text-align: left; padding: 8px; border-bottom: 1px solid #eee; font-size: 14px; }
+td button { margin-right: 6px; }
